@@ -1,24 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
-function App() {
+import Clienti from './Components/Clienti';
+import React from 'react';
+
+const App : React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <h1>Saluti sono React con Typescript</h1>
+
+      <Clienti
+      nome = "Nicola La Rocca"
+      bollini = {1780}
+      data = "01/07/20211"
+      />
+
+      <Clienti
+      nome = "Mario Bianchi"
+      bollini = {238}
+      data = "01/08/20211"
+      />
     </div>
   );
 }
