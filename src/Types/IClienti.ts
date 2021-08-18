@@ -1,5 +1,6 @@
 export interface IClienti {
     nome : string
     bollini : number
-    data : string
+    data? : string
+    deleteCli : () => void
 }
