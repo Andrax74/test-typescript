@@ -1,6 +1,6 @@
 import './App.css';
 
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
 import Clienti from './Components/Clienti';
 import { IClienti } from './Types/IClienti';
@@ -22,6 +22,18 @@ const App : React.FC = () => {
     allCli: []
   })
 
+  const [bollini, setBollini] = useState(0);
+
+  useEffect(() => {
+    console.log("Attivato useEffect");
+
+    if (bollini > 0)
+    {
+      console.log("Hai diritto a " + (bollini / 500) + " Coupons"); 
+    }
+
+  },[bollini])
+
   const onChangeHandler = (e : React.ChangeEvent<HTMLInputElement>) : void => {
 
     setClientiState({
@@ -32,6 +44,19 @@ const App : React.FC = () => {
 
       }
     })
+
+    if (e.target.name === "nome" &&  e.target.value === "main")
+    {
+      setClientiState({
+        ...clientiState,
+        currentCli : {
+          ...clientiState.currentCli,
+          nome : "Nicola",
+          bollini : 1500,
+          data : "01/08/2021"
+        }
+      })
+    }
   }
 
   const submitForm = (e : React.SyntheticEvent) : void => {
@@ -120,7 +145,9 @@ const App : React.FC = () => {
         </div>
         <button type="submit" className="btn btn-primary">Aggiungi Cliente</button>
 
+        <button className="btn btn-primary" onClick={() => setBollini(clientiState.currentCli.bollini)}>Calcola Coupon</button>
       </form>
+      
       {viewAllClienti}
     </div>
   );
