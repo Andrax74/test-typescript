@@ -5,6 +5,7 @@ import React, {useEffect, useState} from 'react';
 import Clienti from './Components/Clienti';
 import { IClienti } from './Types/IClienti';
 import { Loading } from './Components/Loading';
+import axios from 'axios';
 
 const App : React.FC = () => {
 
@@ -38,6 +39,39 @@ const App : React.FC = () => {
   },[bollini])
 
   useEffect(() => {
+
+    const fetchData = async () => {
+    
+      try {
+        const result = await axios('http://localhost:5051/api/clienti/cerca/all');
+
+        console.log(result.data);
+        
+        
+        setClientiState({
+          currentCli: {
+            nome : "",
+            bollini : 0,
+            data : "",
+            deleteCli : () => {}
+          },
+          allCli : result.data
+        })
+        
+      } 
+      catch (error) {
+        setError(error.message);
+        setLoading(false);
+      }
+
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  /*
+  useEffect(() => {
     fetch('http://localhost:5051/api/clienti/cerca/all')
     .then(res => {
       
@@ -66,6 +100,7 @@ const App : React.FC = () => {
       setLoading(false);
     })
   },[])
+  */
 
   const onChangeHandler = (e : React.ChangeEvent<HTMLInputElement>) : void => {
 
