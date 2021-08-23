@@ -4,6 +4,7 @@ import React, {useEffect, useState} from 'react';
 
 import Clienti from './Components/Clienti';
 import { IClienti } from './Types/IClienti';
+import { Loading } from './Components/Loading';
 
 const App : React.FC = () => {
 
@@ -23,6 +24,8 @@ const App : React.FC = () => {
   })
 
   const [bollini, setBollini] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     console.log("Attivato useEffect");
@@ -33,6 +36,36 @@ const App : React.FC = () => {
     }
 
   },[bollini])
+
+  useEffect(() => {
+    fetch('http://localhost:5051/api/clienti/cerca/all')
+    .then(res => {
+      
+      if (!res.ok) {
+        throw Error("Impossibile ottenere i dati dei clienti!");
+      }
+      return res.json();
+    })
+    .then(data => {
+      console.log(data);
+
+      setClientiState({
+        currentCli: {
+          nome : "",
+          bollini : 0,
+          data : "",
+          deleteCli : () => {}
+        },
+        allCli : data
+      })
+      setLoading(false);
+    })
+    .catch(err => {
+      console.log(err.message);
+      setError(err.message);
+      setLoading(false);
+    })
+  },[])
 
   const onChangeHandler = (e : React.ChangeEvent<HTMLInputElement>) : void => {
 
@@ -147,7 +180,8 @@ const App : React.FC = () => {
 
         <button className="btn btn-primary" onClick={() => setBollini(clientiState.currentCli.bollini)}>Calcola Coupon</button>
       </form>
-      
+      {error && <div className="errmsg alert alert-danger" role="alert">{error}</div>}
+      {loading && <Loading/>}
       {viewAllClienti}
     </div>
   );
