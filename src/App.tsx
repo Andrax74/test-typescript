@@ -41,13 +41,12 @@ const App : React.FC = () => {
   useEffect(() => {
 
     const fetchData = async () => {
-    
-      try {
-        const result = await axios('http://localhost:5051/api/clienti/cerca/all');
 
+      try {
+
+        const result = await axios('http://localhost:5051/api/clienti/cerca/all');
         console.log(result.data);
-        
-        
+
         setClientiState({
           currentCli: {
             nome : "",
@@ -57,18 +56,20 @@ const App : React.FC = () => {
           },
           allCli : result.data
         })
-        
-      } 
-      catch (error) {
+
+      }
+      catch(error) {
         setError(error.message);
         setLoading(false);
       }
 
       setLoading(false);
-    };
+      
+    }
 
     fetchData();
-  }, []);
+
+  },[]);
 
   /*
   useEffect(() => {
