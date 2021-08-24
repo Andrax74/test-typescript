@@ -16,6 +16,7 @@ const App : React.FC = () => {
 
   const [clientiState, setClientiState] = useState<IallClienti>({
     currentCli: {
+      codfid : "",
       nome : "",
       bollini : 0,
       data : "",
@@ -39,40 +40,6 @@ const App : React.FC = () => {
   },[bollini])
 
   useEffect(() => {
-
-    const fetchData = async () => {
-
-      try {
-
-        const result = await axios('http://localhost:5051/api/clienti/cerca/all');
-        console.log(result.data);
-
-        setClientiState({
-          currentCli: {
-            nome : "",
-            bollini : 0,
-            data : "",
-            deleteCli : () => {}
-          },
-          allCli : result.data
-        })
-
-      }
-      catch(error) {
-        setError(error.message);
-        setLoading(false);
-      }
-
-      setLoading(false);
-      
-    }
-
-    fetchData();
-
-  },[]);
-
-  /*
-  useEffect(() => {
     fetch('http://localhost:5051/api/clienti/cerca/all')
     .then(res => {
       
@@ -86,6 +53,7 @@ const App : React.FC = () => {
 
       setClientiState({
         currentCli: {
+          codfid : "",
           nome : "",
           bollini : 0,
           data : "",
@@ -101,7 +69,6 @@ const App : React.FC = () => {
       setLoading(false);
     })
   },[])
-  */
 
   const onChangeHandler = (e : React.ChangeEvent<HTMLInputElement>) : void => {
 
@@ -131,19 +98,31 @@ const App : React.FC = () => {
   const submitForm = (e : React.SyntheticEvent) : void => {
     e.preventDefault();
 
-    setClientiState({
-      currentCli: {
-        nome : "",
-        bollini : 0,
-        data : "",
-        deleteCli : () => {}
-      },
-      allCli : [
-        ...clientiState.allCli,
-        clientiState.currentCli
-      ]
-    })
+    axios.post('http://localhost:5051/api/clienti/registra', clientiState.currentCli)
+      .then(response => {
 
+        console.log(response);
+
+        setClientiState({
+          currentCli: {
+            codfid : "",
+            nome : "",
+            bollini : 0,
+            data : "",
+            deleteCli : () => {}
+          },
+          allCli : [
+            ...clientiState.allCli,
+            clientiState.currentCli
+          ]
+        })
+
+
+      })
+      .catch(error => {
+        console.log(error);
+        setError(error.message);
+      })
   }
 
   console.log(clientiState);
@@ -151,6 +130,7 @@ const App : React.FC = () => {
   const viewAllClienti = clientiState.allCli.map((cliente, i) => (
     <Clienti
     key = {i}
+    codfid = {cliente.codfid}
     nome = {cliente.nome}
     bollini = {cliente.bollini}
     data = {cliente.data}
@@ -176,6 +156,18 @@ const App : React.FC = () => {
       <br/>
 
       <form onSubmit={submitForm}>
+
+      <div className="mb-3">
+          <label htmlFor="nomeCli" className="form-label">CodFid:</label>
+          <input 
+          className = "form-control"
+          id = "codFid"
+          type = "text"
+          name = "codfid"
+          onChange = {onChangeHandler}
+          value = {clientiState.currentCli.codfid}
+          />
+        </div>
 
         <div className="mb-3">
           <label htmlFor="nomeCli" className="form-label">Nome:</label>

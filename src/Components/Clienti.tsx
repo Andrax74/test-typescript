@@ -3,10 +3,10 @@ import './Clienti.css';
 import { IClienti } from '../Types/IClienti';
 import React from 'react';
 
-const Clienti : React.FC<IClienti> = ({nome,bollini,data,deleteCli}) => {
+const Clienti : React.FC<IClienti> = ({codfid,nome,bollini,data,deleteCli}) => {
     return (
         <div className="card">
-            <h5 className="card-header">{nome}</h5>
+            <h5 className="card-header">{codfid} - {nome}</h5>
             <div className="card-body">
                 <h5 className="card-title">Monte Bollini: {bollini}</h5>
                 {
