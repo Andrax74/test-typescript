@@ -144,10 +144,25 @@ const App : React.FC = () => {
         return index !== i
     })
 
-    setClientiState({
-      ...clientiState,
-      allCli : filteredCli
+    console.log(clientiState.allCli[index].codfid);    
+
+    axios.delete(`http://localhost:5051/api/clienti/elimina/${clientiState.allCli[index].codfid}`)
+    .then(response => {
+
+      console.log(response);
+
+      setClientiState({
+        ...clientiState,
+        allCli : filteredCli
+      })
+
     })
+    .catch(error => {
+      console.log(error);
+      setError(error.message);
+    })
+
+    
   }
   
   return (
