@@ -89,7 +89,7 @@ const App : React.FC = () => {
           ...clientiState.currentCli,
           nome : "Nicola",
           bollini : 1500,
-          data : "01/08/2021"
+          data : "01/09/2021"
         }
       })
     }
